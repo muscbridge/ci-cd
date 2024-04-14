@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Set outputs
         id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUTß
+        run: echo "COMMIT_SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -30,4 +30,4 @@ jobs:
         with:
           file: Dockerfile_py3.11
           push: true
-          tags: dmri/ci-cd:latest,dmri/ci-cd:${{ steps.vars.outputs.sha_short }}
+          tags: dmri/ci-cd:latest,dmri/ci-cd:${{ env.COMMIT_SHORT_SHA }}
