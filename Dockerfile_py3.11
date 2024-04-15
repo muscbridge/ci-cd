@@ -2,6 +2,8 @@ FROM python:3.11-bullseye
 
 # Set up connfiguration envvars
 ENV INSTALL_DIR=/usr/local
+ENV FSL_VERSION=6.0.7.9
+ENV MRTRIX_VERSION=3.0.4
 
 # Initial update
 RUN apt update && \
@@ -35,7 +37,7 @@ ENV PATH="${PATH}:${POETRY_HOME}/bin"
 
 # Install FSL
 RUN curl https://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py -o /tmp/fslinstaller.py
-RUN echo "/usr/local/fsl" | python /tmp/fslinstaller.py
+RUN echo "/usr/local/fsl" | python /tmp/fslinstaller.py -V ${FSL_VERSION}
 
 # Configure FSL Environment
 ENV FSLDIR=${INSTALL_DIR}/fsl
@@ -45,7 +47,7 @@ ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${FSLDIR}
 
 # Build and configure MRTRIX3
 ENV MRTRIXDIR=${INSTALL_DIR}/mrtrix3
-RUN git clone https://github.com/MRtrix3/mrtrix3.git ${MRTRIXDIR}
+RUN git clone --branch ${MRTRIX_VERSION} https://github.com/MRtrix3/mrtrix3.git ${MRTRIXDIR}
 ENV CXX=/usr/bin/clang++
 ENV ARCH=native
 RUN cd ${MRTRIXDIR} && \
