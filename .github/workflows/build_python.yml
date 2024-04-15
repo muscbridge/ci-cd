@@ -32,4 +32,4 @@ jobs:
         with:
           file: Dockerfile_py3.11
           push: true
-          tags: dmri/ci-cd:latest,dmri/ci-cd:${{ SHORT_SHA }}
+          tags: dmri/ci-cd:latest,dmri/ci-cd:${{ env.SHORT_SHA }}
