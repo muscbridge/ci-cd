@@ -31,7 +31,7 @@ RUN apt update && \
 # Install Poetry
 ENV POETRY_HOME=${INSTALL_DIR}/poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -
- ENV PATH="${PATH}:${POETRY_HOME}/bin"
+ENV PATH="${PATH}:${POETRY_HOME}/bin"
 
 # Install FSL
 RUN curl https://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py -o /tmp/fslinstaller.py
@@ -40,8 +40,8 @@ RUN echo "/usr/local/fsl" | python /tmp/fslinstaller.py
 # Configure FSL Environment
 ENV FSLDIR=${INSTALL_DIR}/fsl
 ENV FSLOUTPUTTYPE=NIFTI_GZ
-ENV PATH=$PATH:$FSLDIR/bin
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$FSLDIR
+ENV PATH=$PATH:${FSLDIR}/bin
+ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${FSLDIR}
 
 # Build and configure MRTRIX3
 ENV MRTRIXDIR=${INSTALL_DIR}/mrtrix3
@@ -51,7 +51,7 @@ ENV ARCH=native
 RUN cd ${MRTRIXDIR} && \
       ./configure -nogui -openmp && \
       ./build && \
-      ./set_path
+ENV PATH=$PATH:${MRTRIXDIR}/bin
 
 # Remove unwanted packages
 RUN apt-get autoremove && apt-get clean
