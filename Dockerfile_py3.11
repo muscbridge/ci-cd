@@ -50,7 +50,7 @@ ENV CXX=/usr/bin/clang++
 ENV ARCH=native
 RUN cd ${MRTRIXDIR} && \
       ./configure -nogui -openmp && \
-      ./build && \
+      ./build
 ENV PATH=$PATH:${MRTRIXDIR}/bin
 
 # Remove unwanted packages
