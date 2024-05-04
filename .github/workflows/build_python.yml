@@ -42,7 +42,7 @@ jobs:
           file: Dockerfile_py3.11
           push: true
           tags: |
-            dmri/ci-cd:latest
-            dmri/ci-cd:${{ env.SHORT_SHA }}
-            ghcr.io/muscbridge/ci-cd:latest
-            ghcr.io/muscbridge/ci-cd:${{ env.SHORT_SHA }}
+            dmri/ci-cd-py3.11:latest
+            dmri/ci-cd-py3.11:${{ env.SHORT_SHA }}
+            ghcr.io/muscbridge/ci-cd-py3.11:latest
+            ghcr.io/muscbridge/ci-cd-py3.11:${{ env.SHORT_SHA }}
