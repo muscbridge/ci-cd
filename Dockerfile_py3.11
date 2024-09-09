@@ -37,7 +37,7 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="${PATH}:${POETRY_HOME}/bin"
 
 # Install UV
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh 
+RUN pip install uv
 
 # Install FSL
 RUN curl https://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py -o /tmp/fslinstaller.py
@@ -61,3 +61,5 @@ ENV PATH=$PATH:${MRTRIXDIR}/bin
 
 # Remove unwanted packages
 RUN apt autoremove && apt-get clean
+
+CMD ["/bin/bash"]
