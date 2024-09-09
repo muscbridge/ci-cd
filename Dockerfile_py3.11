@@ -1,6 +1,7 @@
 FROM python:3.11-bullseye
+SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 
-# Set up connfiguration envvars
+# Set up configuration envvars
 ENV INSTALL_DIR=/usr/local
 ENV FSL_VERSION=6.0.7.9
 ENV MRTRIX_VERSION=3.0.4
