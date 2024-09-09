@@ -2,9 +2,11 @@ FROM python:3.11-bullseye
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 
 # Set up configuration envvars
-ENV INSTALL_DIR=/usr/local
-ENV FSL_VERSION=6.0.7.9
-ENV MRTRIX_VERSION=3.0.4
+ENV INSTALL_DIR=/usr/local \
+    FSL_VERSION=6.0.7.9 \
+    MRTRIX_VERSION=3.0.4 \
+    VIRTUAL_ENV=/venv \
+    PATH=$PATH:$/venv/bin
 
 # Initial update
 RUN apt update && \
@@ -37,7 +39,9 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="${PATH}:${POETRY_HOME}/bin"
 
 # Install UV
-RUN pip install uv
+RUN pip install uv && \
+    uv env ${VIRTUAL_ENV} && \
+    uv pip install -U pip setuptools wheel
 
 # Install FSL
 RUN curl https://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py -o /tmp/fslinstaller.py
