@@ -35,6 +35,9 @@ ENV POETRY_HOME=${INSTALL_DIR}/poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="${PATH}:${POETRY_HOME}/bin"
 
+# Install UV
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh 
+
 # Install FSL
 RUN curl https://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py -o /tmp/fslinstaller.py
 RUN echo "/usr/local/fsl" | python /tmp/fslinstaller.py -V ${FSL_VERSION}
