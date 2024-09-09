@@ -40,7 +40,7 @@ ENV PATH="${PATH}:${POETRY_HOME}/bin"
 
 # Install UV
 RUN pip install uv && \
-    uv env ${VIRTUAL_ENV} && \
+    uv venv ${VIRTUAL_ENV} && \
     uv pip install -U pip setuptools wheel
 
 # Install FSL
