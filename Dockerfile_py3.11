@@ -5,8 +5,7 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ENV INSTALL_DIR=/usr/local \
     FSL_VERSION=6.0.7.9 \
     MRTRIX_VERSION=3.0.4 \
-    VIRTUAL_ENV=/venv \
-    PATH=$PATH:$/venv/bin
+    VIRTUAL_ENV=/venv
 
 # Initial update
 RUN apt update && \
@@ -36,12 +35,13 @@ RUN apt update && \
 # Install Poetry
 ENV POETRY_HOME=${INSTALL_DIR}/poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -
-ENV PATH="${PATH}:${POETRY_HOME}/bin"
+ENV PATH=${PATH}:${POETRY_HOME}/bin
 
 # Install UV
 RUN pip install uv && \
     uv venv ${VIRTUAL_ENV} && \
     uv pip install -U pip setuptools wheel
+ENV PATH=$PATH:${VIRTUAL_ENV}/bin
 
 # Install FSL
 RUN curl https://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py -o /tmp/fslinstaller.py
