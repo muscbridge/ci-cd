@@ -1,0 +1,69 @@
+FROM python:3.12-bullseye
+SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+
+# Set up configuration envvars
+ENV INSTALL_DIR=/usr/local \
+    FSL_VERSION=6.0.7.9 \
+    MRTRIX_VERSION=3.0.4 \
+    VIRTUAL_ENV=/venv
+
+# Initial update
+RUN apt update && \
+      apt install -y \
+      apt-utils \
+      wget \
+      curl \
+      nano \
+      software-properties-common \
+      jq \
+      libblas-dev \
+      liblapack-dev \
+      libatlas-base-dev \
+      gfortran \
+      git \
+      g++ \
+      clang \
+      libeigen3-dev \
+      zlib1g-dev \
+      libqt5opengl5-dev \
+      libqt5svg5-dev \
+      libgl1-mesa-dev \
+      libfftw3-dev \
+      libtiff5-dev \
+      libpng-dev
+
+# Install Poetry
+ENV POETRY_HOME=${INSTALL_DIR}/poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
+ENV PATH=${PATH}:${POETRY_HOME}/bin
+
+# Install UV
+RUN pip install uv && \
+    uv venv ${VIRTUAL_ENV} && \
+    uv pip install -U pip setuptools wheel
+ENV PATH=$PATH:${VIRTUAL_ENV}/bin
+
+# Install FSL
+RUN curl https://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py -o /tmp/fslinstaller.py
+RUN echo "/usr/local/fsl" | python /tmp/fslinstaller.py -V ${FSL_VERSION}
+
+# Configure FSL Environment
+ENV FSLDIR=${INSTALL_DIR}/fsl
+ENV FSLOUTPUTTYPE=NIFTI_GZ
+ENV PATH=$PATH:${FSLDIR}/bin
+ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${FSLDIR}
+
+# Build and configure MRTRIX3
+ENV MRTRIXDIR=${INSTALL_DIR}/mrtrix3
+RUN git clone --branch ${MRTRIX_VERSION} https://github.com/MRtrix3/mrtrix3.git ${MRTRIXDIR}
+ENV CXX=/usr/bin/clang++
+ENV ARCH=native
+RUN cd ${MRTRIXDIR} && \
+      ./configure -nogui -openmp && \
+      ./build
+ENV PATH=$PATH:${MRTRIXDIR}/bin
+
+# Remove unwanted packages
+RUN apt autoremove && apt-get clean
+
+CMD ["/bin/bash"]

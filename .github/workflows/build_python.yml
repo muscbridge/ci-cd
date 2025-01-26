@@ -34,7 +34,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       -
-        name: Build and push
+        name: Build and push (Python 3.11)
         uses: docker/build-push-action@v5
         with:
           platforms:
@@ -46,3 +46,16 @@ jobs:
             dmri/ci-cd-py3.11:${{ env.SHORT_SHA }}
             ghcr.io/muscbridge/ci-cd-py3.11:latest
             ghcr.io/muscbridge/ci-cd-py3.11:${{ env.SHORT_SHA }}
+      -
+        name: Build and push (Python 3.12)
+        uses: docker/build-push-action@v5
+        with:
+          platforms:
+            linux/amd64
+          file: Dockerfile_py3.12
+          push: true
+          tags: |
+            dmri/ci-cd-py3.12:latest
+            dmri/ci-cd-py3.12:${{ env.SHORT_SHA }}
+            ghcr.io/muscbridge/ci-cd-py3.12:latest
+            ghcr.io/muscbridge/ci-cd-py3.12:${{ env.SHORT_SHA }}
