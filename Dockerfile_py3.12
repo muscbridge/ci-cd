@@ -3,7 +3,7 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 
 # Set up configuration envvars
 ENV INSTALL_DIR=/usr/local \
-    FSLINSTALLDIR=${INSTALL_DIR}/fsl
+    FSLINSTALLDIR=${INSTALL_DIR}/fsl \
     MRTRIX_VERSION=3.0.4 \
     VIRTUAL_ENV=/venv
 
