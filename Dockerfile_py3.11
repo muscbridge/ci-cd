@@ -3,7 +3,7 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 
 # Set up configuration envvars
 ENV INSTALL_DIR=/usr/local \
-    FSLINSTALLDIR=${INSTALL_DIR}/fsl \
+    FSLINSTALLDIR=/usr/local/fsl \
     FSL_VERSION=6.0.7.16 \
     MRTRIX_VERSION=3.0.4 \
     VIRTUAL_ENV=/venv
@@ -49,7 +49,7 @@ RUN curl https://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py -o /tmp/fslinst
 RUN python /tmp/fslinstaller.py -m -d ${FSLINSTALLDIR} -V ${FSL_VERSION}
 
 # Configure FSL Environment
-ENV FSLDIR=${INSTALL_DIR}/fsl
+ENV FSLDIR=${FSLINSTALLDIR}
 ENV FSLOUTPUTTYPE=NIFTI_GZ
 ENV PATH=$PATH:${FSLDIR}/bin
 ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${FSLDIR}
